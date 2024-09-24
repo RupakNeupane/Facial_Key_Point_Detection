@@ -4,12 +4,12 @@ from torchvision import transforms
 
 class FacialKeyPointDetection:
     def __init__(self) -> None:
-        self.model = torch.load('dump/version_1/model.pth')
+        self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        self.model = torch.load('dump/version_1/model.pth',map_location=self.device)
         self.normalize = transforms.Normalize(
             mean=[0.485, 0.456, 0.406],
             std=[0.229, 0.224, 0.225]
         )
-        self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
     def predict(self, image):
         img, img_disp = self.preprocess(image)
